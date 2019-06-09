@@ -1,0 +1,49 @@
+C14069018 楊傑祺 繪圖技術設計與應用
+homework 3 - hierarchical model
+
+Environment:
+
+macos0.14.4
+讀圖片使用 SOIL2這個library
+讀obj file 使用assimp這個model loader
+
+
+How to use your program:
+在任何一台macos系統的電腦
+可以使用xcode 來link library 並compile
+
+也可以用 ubunutu 的環境來 compile 
+how to compile:
+g++ -std=c++0x -o output main.cpp  -lGL -lglfw -lGLEW -lm -lSOIL -lassimp 
+./output
+
+user input:
+我把的所有的model定義在一個class裡面 called "mymodels"
+
+使用arrow keys來控制
+
+上 ：model 往前移動
+下 ：model 往後移動
+左 ：model 向左轉
+右 ：model 向右轉
+
+使用W ,S ,A , D （前後左右） 和 滑鼠來控制camera的位置
+
+Z ：model 左手 舉起
+X ：model 左手 放下
+C ：model 右手 舉起（連同右手上的 槍 一起轉動）---> hierarchical
+V ：model 右手 放下
+space  : 跳躍 （以及右手會旋轉 還有 腳也會有動的感覺）（不是單純向上跳起來而已）
+
+
+我的model 是 分為 頭 身體 左手 右手 右手上的武器 左腳 右腳
+（身體 右手 右手的武器 這裡是滿足三階層以上的 requirement）
+我model 的移動 因為models的每一個部分是分開的 所以我在每一個model裡面有定義兩個
+glm : mat4 ，一個當最初的狀態 另一個是現在的狀態 所以我每一次做移動或旋轉 都是先把
+ transform 和需要移動的matrix 做 multiplication 然後存在model裡面的mat4裡
+ 因此之後的draw都是用 
+ glUniformMatrix4fv( glGetUniformLocation( shader.Program, "model" ), 1, GL_FALSE, glm::value_ptr(   transform ) );
+ 每個model 的mat4來改shader 的uniform 的model
+ 之後再來將model畫出來
+
+
